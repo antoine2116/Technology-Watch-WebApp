@@ -40,16 +40,16 @@ function ArticleItem({
           {article.summary}
         </p>
         <div className="flex justify-between">
-          <div className="inline-flex items-center">
+          <div className="inline-flex items-center text-xs">
             <IoCalendar className="mr-2 text-slate-600" />
-            <span className="text-sm">
-              {article.date.toLocaleDateString()}
+            <span>
+              {article.date.toLocaleDateString()} at {article.date.toLocaleTimeString()}
             </span>
           </div>
           <Link
             href={article.url}
             className="inline-flex items-center px-3 py-1 text-sm font-medium text-center text-white bg-green-700 rounded-lg">
-            Read more..
+            Read more...
           </Link>
         </div>
       </div>

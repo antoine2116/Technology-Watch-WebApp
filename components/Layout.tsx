@@ -18,11 +18,14 @@ function Layout({ children }: { children: React.ReactNode }) {
 
       <div className="antialiased bg-white text-slate-900">
         <Navbar />
-        <div className="py-4 px-6">
-          <div className="container mx-auto">
-            <main>{children}</main>
+        <div className="flex w-full">
+          <div className="flex-auto py-4 px-6">
+            <div className="container mx-auto">
+              <main>{children}</main>
+            </div>
           </div>
         </div>
+
       </div>
     </>
   );

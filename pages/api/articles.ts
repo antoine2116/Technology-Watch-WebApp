@@ -1,16 +1,6 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import algoliasearch from 'algoliasearch/lite';
-
-interface Article {
-    url: string;
-    title: string;
-    summary: string;
-    imageUrl: string | null;
-    date: Date;
-    source: string;
-    author: string;
-
-}
+import { Article } from "@/models/Article";
 
 
 export default async function handler(
@@ -25,7 +15,6 @@ export default async function handler(
         //await POST(req, res);
     }
 }
-
 
 // @ts-ignore
 // @ts-ignore
@@ -62,7 +51,7 @@ const GET = async (req: NextApiRequest, res: NextApiResponse) => {
 
 
         const hits = resultArticles.hits;
-        hits.forEach((article) => {
+        hits.forEach((article : Article) => {
             results.push(castToArticle(article));
 
         })

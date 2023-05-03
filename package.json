@@ -14,7 +14,7 @@
     "@types/node": "18.16.3",
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.1",
-    "algolia-search": "^2.0.1",
+    "algoliasearch": "^4.17.0",
     "autoprefixer": "10.4.14",
     "dotenv": "^16.0.3",
     "eslint": "8.39.0",

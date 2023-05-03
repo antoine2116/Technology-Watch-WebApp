@@ -1,8 +1,15 @@
+import {useArticles} from "@/contexts/ArticlesContext";
+
 import ArticleList from "@/components/Articles/ArticlesList";
 import { Article } from "@/models/Article";
+import {useEffect, useState} from "react";
 
 export default function Home() {
-  const articles: Article[] = [
+
+
+    const {setAuthors, setSources, setFromDate, setToDate, articles} = useArticles()
+
+  /*const articles: Article[] = [
     {
       url: "https://www.google.com",
       title: "Article 1",
@@ -30,14 +37,18 @@ export default function Home() {
       author: "Dominique Rocheteau",
       source: "xxxx"
     }
-  ];
+  ];*/
 
   return (
     <>
       <div className="mb-4">
         <h1 className="font-extrabold text-3xl tracking-tight">Technology Watch</h1>
       </div>
-      <ArticleList articles={articles} />
+        {articles.length > 0 && (
+
+        <ArticleList articles={articles}/>
+        )}
     </>
   )
+
 }

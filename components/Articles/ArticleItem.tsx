@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { getFaviconFromUrl } from "@/helpers/ImageHelper";
 import { Article } from "@/models/Article";
+import {useEffect} from "react";
 
 interface ArticleItemProps {
   article: Article;
@@ -12,18 +13,26 @@ interface ArticleItemProps {
 function ArticleItem({
   article
 }: ArticleItemProps) {
+
+  useEffect(() => {
+    console.log('article', article)
+  }, [])
+
   return (
     <div className="max-w-sm bg-white border border-gray-200 rounded shadow">
       <div className="p-4">
         <div className="flex justify-end">
-          <Image
-            src={getFaviconFromUrl(article.url)}
-            height={24}
-            width={24}
-            alt={article.title}
-          />
+          {article.imageUrl && (
+              <Image
+                  src={getFaviconFromUrl(article.imageUrl)}
+                  height={24}
+                  width={24}
+                  alt={article.title}
+              />
+          )}
+
         </div>
-        <Link href={article.url}>
+        <Link href={article.url} target={"_blank"}>
           <h5 className="mb-2 text-2xl font-bold tracking-tight text-slate-900">
             {article.title}
           </h5>
@@ -42,11 +51,12 @@ function ArticleItem({
         <div className="flex justify-between">
           <div className="inline-flex items-center text-xs">
             <IoCalendar className="mr-2 text-slate-600" />
-            <span>
-              {article.date.toLocaleDateString()} at {article.date.toLocaleTimeString()}
+            <span className="text-sm">
+              {article.date.toString()}
             </span>
           </div>
           <Link
+              target={"_blank"}
             href={article.url}
             className="inline-flex items-center px-3 py-1 text-sm font-medium text-center text-white bg-green-700 rounded-lg">
             Read more...

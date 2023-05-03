@@ -27,6 +27,8 @@ export default async function handler(
 }
 
 
+// @ts-ignore
+// @ts-ignore
 const GET = async (req: NextApiRequest, res: NextApiResponse) => {
     const {q, fromDate, toDate, author, source} = req.query;
 
@@ -61,17 +63,7 @@ const GET = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const hits = resultArticles.hits;
         hits.forEach((article) => {
-            console.log(article)
-            let artObj: Article = {
-                url: article.url.toString(),
-                title: article.title.toString(),
-                summary: article.summary.toString(),
-                imageUrl: article.imageUrl ? article.imageUrl.toString() : null,
-                date: new Date(article.date),
-                source: article.source.toString(),
-                author: article.author.toString()
-            }
-            results.push(artObj);
+            results.push(castToArticle(article));
 
         })
 
@@ -86,6 +78,22 @@ const GET = async (req: NextApiRequest, res: NextApiResponse) => {
     res.end();
 }
 
+
 const POST = async (req: NextApiRequest, res: NextApiResponse) => {
 
+}
+
+
+
+
+function castToArticle(data: any): Article {
+    return {
+        url: data.url,
+        title: data.title,
+        summary: data.summary,
+        imageUrl: data.imageUrl || null,
+        date: new Date(data.date),
+        source: data.source,
+        author: data.author,
+    } as Article;
 }

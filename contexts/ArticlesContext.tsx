@@ -20,6 +20,7 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
 
 
     useEffect( () => {
+        console.log("Fetching after change")
         fetchArticles()
     }, [activeAuthors, activeSources, activeFromDate, activeToDate, query])
 
@@ -43,12 +44,17 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
             url.searchParams.append("q", query);
         }
 
+        console.log('url', url.toString())
+
         let res = await fetch(url)
         res = (await res.json()).articles
 
         setArticles([...res])
 
-        setFilters(res);
+
+        if(authors.length == 0 || sources.length == 0){
+            setFilters(res);
+        }
 
     }
 
@@ -58,6 +64,8 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
         const sources = new Set<string>();
 
         for (const article of articles) {
+
+            console.log('articleContext', article)
             if(article.author != null && !authors.has(article.author)){
                 authors.add(article.author);
             }
@@ -66,6 +74,9 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
                 sources.add(article.source);
             }
         }
+
+        setAuthors([...Array.from(authors.values())]);
+        setSources([...Array.from(sources.values())]);
     }
 
     return <ArticlesContext.Provider value={{
@@ -77,6 +88,10 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
         articles,
         query,
         setQuery,
+        setActiveAuthors,
+        setActiveSources,
+        setActiveFromDate,
+        setActiveToDate
     }}>
         {children}
     </ArticlesContext.Provider>

@@ -19,7 +19,7 @@ export default async function handler(
 // @ts-ignore
 // @ts-ignore
 const GET = async (req: NextApiRequest, res: NextApiResponse) => {
-    const {q, fromDate, toDate, author, source} = req.query;
+    const {q, fromDate, toDate, authors, sources} = req.query;
 
     let query: string = "";
     if(q) {
@@ -29,18 +29,27 @@ const GET = async (req: NextApiRequest, res: NextApiResponse) => {
     const searchClient = algoliasearch('A1UMASFHFR', '27ab332b0832d9d11b62076fd86de7ef');
 
     let filters = [];
+
     if (fromDate) {
         filters.push(`date >= ${fromDate}`);
     }
     if(toDate) {
         filters.push(`date <= ${toDate}`);
     }
-    if(author) {
-        filters.push(`author:${author}`);
+    if(authors) {
+        let authorsArray = authors.toString().split(",");
+        let str = `author:\"${authorsArray.join('\" OR author:\"')}\"`;
+        console.log("Authors Filter", str)
+        filters.push(str);
     }
-    if(source) {
-        filters.push(`source:${source}`);
+    if(sources) {
+        let sourceArray = sources.toString().split(",");
+        let str2 = `source:\"${sourceArray.join('\" OR source:\"')}\"`;
+        console.log("Sources Filter", str2)
+        filters.push(str2);
     }
+
+    console.log("Filters", filters)
 
     let results: Article[] = []
     try {
@@ -51,6 +60,8 @@ const GET = async (req: NextApiRequest, res: NextApiResponse) => {
 
 
         const hits = resultArticles.hits;
+
+        // @ts-ignore
         hits.forEach((article : Article) => {
             results.push(castToArticle(article));
 

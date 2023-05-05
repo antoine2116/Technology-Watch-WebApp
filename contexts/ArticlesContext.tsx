@@ -18,11 +18,25 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
     const [query, setQuery] = useState<string>("");
 
 
+    const [areFiltersApplied, setAreFiltersApplied] = useState<boolean>(false);
+
+
 
     useEffect( () => {
         console.log("Fetching after change")
+
+        if(activeFromDate != null || activeToDate != null
+            || (activeAuthors != null && activeAuthors.length > 0)
+            || (activeSources != null && activeSources.length > 0)){
+            setAreFiltersApplied(true)
+        } else {
+            setAreFiltersApplied(false)
+        }
+
         fetchArticles()
     }, [activeAuthors, activeSources, activeFromDate, activeToDate, query])
+
+
 
 
     const formatDates = (date:Date) => {
@@ -73,7 +87,6 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
 
         for (const article of articles) {
 
-            console.log('articleContext', article)
             if(article.author != null && !authors.has(article.author)){
                 authors.add(article.author);
             }
@@ -99,7 +112,8 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
         setActiveAuthors,
         setActiveSources,
         setActiveFromDate,
-        setActiveToDate
+        setActiveToDate,
+        areFiltersApplied
     }}>
         {children}
     </ArticlesContext.Provider>

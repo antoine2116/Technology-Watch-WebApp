@@ -64,6 +64,8 @@ export const DateFilter = ({ name, selectHandler }: DateFilterProps) => {
                     asSingle={true}
                     useRange={false}
                     popoverDirection="up"
+                    displayFormat={"DD/MM/YYYY"}
+                    startWeekOn={'mon'}
 
                 />
             </div>
@@ -77,6 +79,8 @@ export const DateFilter = ({ name, selectHandler }: DateFilterProps) => {
                     asSingle={true}
                     useRange={false}
                     popoverDirection="up"
+                    displayFormat={"DD/MM/YYYY"}
+                    startWeekOn={'mon'}
 
                 />
             </div>

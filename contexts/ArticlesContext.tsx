@@ -21,9 +21,15 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
     const [areFiltersApplied, setAreFiltersApplied] = useState<boolean>(false);
 
 
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
+
 
     useEffect( () => {
         console.log("Fetching after change")
+
+
+        setIsLoading(true)
 
         if(activeFromDate != null || activeToDate != null
             || (activeAuthors != null && activeAuthors.length > 0)
@@ -78,6 +84,9 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
             setFilters(articles);
         }
 
+
+        setIsLoading(false)
+
     }
 
 
@@ -113,7 +122,8 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
         setActiveSources,
         setActiveFromDate,
         setActiveToDate,
-        areFiltersApplied
+        areFiltersApplied,
+        isLoading
     }}>
         {children}
     </ArticlesContext.Provider>

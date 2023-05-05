@@ -7,47 +7,44 @@ import {useEffect, useState} from "react";
 export default function Home() {
 
 
-    const {setAuthors, setSources, setFromDate, setToDate, articles} = useArticles()
+    const {areFiltersApplied, articles, isLoading} = useArticles()
 
-  /*const articles: Article[] = [
-    {
-      url: "https://www.google.com",
-      title: "Article 1",
-      summary: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora ipsam corrupti eos dolor, officia dignissimos asperiores? Doloremque vel alias inventore molestiae quia, quis expedita error et, voluptates omnis hic veniam.",
-      imageUrl: null,
-      date: new Date(),
-      author: "Jean Michel Aulas",
-      source: "xxxx"
-    },
-    {
-      url: "https://www.github.com",
-      title: "Article 2",
-      summary: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora ipsam corrupti eos dolor, officia dignissimos asperiores? Doloremque vel alias inventore molestiae quia, quis expedita error et, voluptates omnis hic veniam.",
-      imageUrl: null,
-      date: new Date(),
-      author: "Dominique Rocheteau",
-      source: "xxxx"
-    },
-    {
-      url: "https://www.stackoverflow.com",
-      title: "Article 3",
-      summary: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora ipsam corrupti eos dolor, officia dignissimos asperiores? Doloremque vel alias inventore molestiae quia, quis expedita error et, voluptates omnis hic veniam.",
-      imageUrl: null,
-      date: new Date(),
-      author: "Dominique Rocheteau",
-      source: "xxxx"
-    }
-  ];*/
+
 
   return (
     <>
-      <div className="mb-4">
-        <h1 className="font-extrabold text-3xl tracking-tight">Technology Watch</h1>
+      <div className="mb-4 text-center">
+        <h1 className="font-extrabold text-3xl tracking-tight ">Technology Watch</h1>
       </div>
         {articles.length > 0 && (
 
         <ArticleList articles={articles}/>
         )}
+        { (articles.length == 0 && !isLoading) && (
+            <div className="text-gray-700 text-center">
+                <h1 className="font-medium text-md tracking-tight">No articles found
+                    { areFiltersApplied && (
+                        <span> with the current filters</span>
+                    )
+                    }
+                </h1>
+            </div>
+        )}
+        { isLoading && (
+            <div className="text-gray-700 text-center">
+                <div className="lds-roller">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        )}
+
     </>
   )
 

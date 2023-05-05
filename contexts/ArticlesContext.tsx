@@ -10,8 +10,8 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
 
     const [activeAuthors, setActiveAuthors] = useState<string[]>([]);
     const [activeSources, setActiveSources] = useState<string[]>([]);
-    const [activeFromDate, setActiveFromDate] = useState<string>("");
-    const [activeToDate, setActiveToDate] = useState<string>("");
+    const [activeFromDate, setActiveFromDate] = useState<Date | null>(null);
+    const [activeToDate, setActiveToDate] = useState<Date | null>(null);
 
     const [articles, setArticles] = useState<Article[]>([]);
 
@@ -24,6 +24,14 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
         fetchArticles()
     }, [activeAuthors, activeSources, activeFromDate, activeToDate, query])
 
+
+    const formatDates = (date:Date) => {
+        let str = date.toLocaleDateString('fr-fr', { year:"numeric", month:"numeric", day:"numeric"})
+            .replaceAll('/', '')
+        console.log("formatDates", str)
+        return str
+    }
+
     const fetchArticles = async () => {
 
         let url = new URL("http://localhost:3000/api/articles");
@@ -33,11 +41,11 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
         if(activeSources.length > 0){
             url.searchParams.append("sources", activeSources.join(","));
         }
-        if(activeFromDate.length > 0){
-            url.searchParams.append("fromDate", activeFromDate);
+        if(activeFromDate != null){
+            url.searchParams.append("fromDate", formatDates(activeFromDate));
         }
-        if(activeToDate.length > 0){
-            url.searchParams.append("toDate", activeToDate);
+        if(activeToDate != null){
+            url.searchParams.append("toDate", formatDates(activeToDate));
         }
 
         if(query.length > 0){
@@ -47,13 +55,13 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
         console.log('url', url.toString())
 
         let res = await fetch(url)
-        res = (await res.json()).articles
+        const articles = (await res.json()).articles as Article[]
 
-        setArticles([...res])
+        setArticles([...articles])
 
 
         if(authors.length == 0 || sources.length == 0){
-            setFilters(res);
+            setFilters(articles);
         }
 
     }

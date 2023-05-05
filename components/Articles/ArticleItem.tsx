@@ -14,9 +14,6 @@ function ArticleItem({
   article
 }: ArticleItemProps) {
 
-  useEffect(() => {
-    console.log('article', article)
-  }, [])
 
   return (
     <div className="max-w-sm bg-white border border-gray-200 rounded shadow">
@@ -52,7 +49,7 @@ function ArticleItem({
           <div className="inline-flex items-center text-xs">
             <IoCalendar className="mr-2 text-slate-600" />
             <span className="text-sm">
-              {article.date.toString()}
+              {new Date(article.date).toLocaleDateString('fr-fr', { year:"numeric", month:"numeric", day:"numeric"})}
             </span>
           </div>
           <Link

@@ -1,6 +1,7 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import algoliasearch from 'algoliasearch/lite';
 import { Article } from "@/models/Article";
+import moment from "moment";
 
 
 export default async function handler(
@@ -31,10 +32,19 @@ const GET = async (req: NextApiRequest, res: NextApiResponse) => {
     let filters = [];
 
     if (fromDate) {
-        filters.push(`date >= ${fromDate}`);
+
+        let m = moment(fromDate.toString(), "DDMMYYYY");
+        let date = m.toDate();
+
+        console.log("Date", date, fromDate.toString(), date.getTime())
+        filters.push(`date >= ${date.getTime()}`);
     }
     if(toDate) {
-        filters.push(`date <= ${toDate}`);
+        let m = moment(toDate.toString(), "DDMMYYYY");
+        let date = m.toDate();
+
+        console.log("Date", date, toDate.toString(), date.getTime())
+        filters.push(`date <= ${date.getTime()}`);
     }
     if(authors) {
         let authorsArray = authors.toString().split(",");

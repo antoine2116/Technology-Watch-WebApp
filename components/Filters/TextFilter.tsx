@@ -31,21 +31,16 @@ export const TextFilter = ({name, options, selectHandler} : FilterProps) => {
         selectHandler(Array.from(s.values()))
     }
 
-    useEffect(() => {
-        //
-        console.log("Selected", selected)
-    }, [selected])
+
 
     return (
         <div className="flex flex-col">
-            <label htmlFor={name}>{name}</label>
-            <div className="grid grid-cols-2 gap-2 px-2">
+            <label htmlFor={name} className={"font-bold"}>{name}</label>
+            <div className="grid grid-cols-3 gap-2">
                 {options.map((option, index) =>
-
-                        <button key={index} onClick={selectOption} data-option={option} className={"p-2 rounded-md border-lime-500 border-2  ring-0"}>
+                        <button key={index} onClick={selectOption} data-option={option} className={"p-2 text-xs rounded-md border-lime-500 border-2  ring-0"}>
                             {option.toUpperCase()}
                         </button>
-
                 )}
             </div>
         </div>

@@ -53,9 +53,9 @@ export const DateFilter = ({ name, selectHandler }: DateFilterProps) => {
 
 
     return (
-        <div date-rangepicker className="grid w-full flex-wrap grid-cols-1 gap-5 text-gray-700">
+        <div date-rangepicker={"true"} className="grid w-full flex-wrap grid-cols-1 gap-5 text-gray-700">
             <label className="block text-white font-bold">{name}</label>
-            <div className="relative col-span-1">
+            <div className=" col-span-1">
                 <Datepicker
                     primaryColor={"blue"}
                     value={startDate}
@@ -67,10 +67,11 @@ export const DateFilter = ({ name, selectHandler }: DateFilterProps) => {
                     displayFormat={"DD/MM/YYYY"}
                     startWeekOn={'mon'}
 
+
                 />
             </div>
 
-            <div className="relative col-span-1">
+            <div className=" col-span-1">
                 <Datepicker
                     primaryColor={"blue"}
                     placeholder={"To"}

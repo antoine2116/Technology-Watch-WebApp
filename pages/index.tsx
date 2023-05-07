@@ -14,11 +14,10 @@ export default function Home() {
   return (
     <>
       <div className="mb-4 text-center">
-        <h1 className="font-extrabold text-3xl tracking-tight ">Technology Watch</h1>
+        <h1 className="font-extrabold text-3xl tracking-tight ">HMI Technology Watch</h1>
       </div>
         {articles.length > 0 && (
-
-        <ArticleList articles={articles}/>
+            <ArticleList articles={articles}/>
         )}
         { (articles.length == 0 && !isLoading) && (
             <div className="text-gray-700 text-center">

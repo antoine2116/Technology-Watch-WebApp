@@ -22,6 +22,7 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
 
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isError, setIsError] = useState<boolean>(false);
 
 
 
@@ -29,7 +30,7 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
         console.log("Fetching after change")
 
 
-        setIsLoading(true)
+
 
         if(activeFromDate != null || activeToDate != null
             || (activeAuthors != null && activeAuthors.length > 0)
@@ -53,7 +54,7 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const fetchArticles = async () => {
-
+        setIsLoading(true)
         let url = new URL("http://localhost:3000/api/articles");
         if(activeAuthors.length > 0){
             url.searchParams.append("authors", activeAuthors.join(","));
@@ -75,6 +76,13 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
         console.log('url', url.toString())
 
         let res = await fetch(url)
+        if(!res.ok){
+            setIsError(true)
+            setIsLoading(false)
+            setArticles([])
+            return
+        }
+
         const articles = (await res.json()).articles as Article[]
 
         setArticles([...articles])
@@ -86,6 +94,7 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
 
 
         setIsLoading(false)
+        setIsError(false)
 
     }
 
@@ -123,7 +132,8 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
         setActiveFromDate,
         setActiveToDate,
         areFiltersApplied,
-        isLoading
+        isLoading,
+        isError
     }}>
         {children}
     </ArticlesContext.Provider>

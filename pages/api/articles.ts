@@ -4,10 +4,21 @@ import { Article } from "@/models/Article";
 import moment from "moment";
 
 
+const API_KEY = process.env.ALGOLIA_API_KEY;
+const APP_ID = process.env.ALGOLIA_APP_ID;
+
+
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
+
+    if(!API_KEY || !APP_ID) {
+        res.status(500).json({ error: "Internal Server Error" });
+        console.error("Algolia API Key or App ID not set in .env file");
+        return;
+    }
+
     if(req.method === "GET") {
         await GET(req, res);
     }
@@ -20,6 +31,9 @@ export default async function handler(
 // @ts-ignore
 // @ts-ignore
 const GET = async (req: NextApiRequest, res: NextApiResponse) => {
+
+
+
     const {q, fromDate, toDate, authors, sources} = req.query;
 
     let query: string = "";
@@ -27,7 +41,7 @@ const GET = async (req: NextApiRequest, res: NextApiResponse) => {
         query = q.toString();
     }
 
-    const searchClient = algoliasearch('A1UMASFHFR', '27ab332b0832d9d11b62076fd86de7ef');
+    const searchClient = algoliasearch(APP_ID, API_KEY);
 
     let filters = [];
 

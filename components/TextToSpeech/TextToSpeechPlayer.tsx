@@ -1,17 +1,21 @@
 import { useSpeech } from "@/hooks/UseSpeech";
-import { log } from "console";
 import { useEffect, useRef, useState } from "react";
-import { IoPause, IoPlay } from "react-icons/io5";
+import { IoPause, IoPlay, IoPlayBack, IoPlayForward } from "react-icons/io5";
 import ClipLoader from "react-spinners/ClipLoader";
 import TextToSpeechButton from "./TextToSpeechButton";
+import { Article } from "@/models/Article";
+import { useIsMount } from "@/hooks/UseIsMount";
 
 interface TextToSpeechPlayerProps {
-  text: string;
+  articles: Article[];
+  multi?: boolean;
 }
 
-function TextToSpeechPlayer({ text }: TextToSpeechPlayerProps) {
-  const { audioURL, loading, getAudio } = useSpeech(text);
+function TextToSpeechPlayer({ articles, multi = false }: TextToSpeechPlayerProps) {
+  const isMount = useIsMount();
   const [isPlaying, setIsPlaying] = useState(false);
+  const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
+  const { audioURL, loading, getAudio } = useSpeech(articles[currentArticleIndex].summary);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Play
@@ -57,36 +61,72 @@ function TextToSpeechPlayer({ text }: TextToSpeechPlayerProps) {
     }
   }, [audioRef.current]);
 
-  // Pause audio when component is unmounted
+  // Next article
+  const nextArticle = () => {
+    if (currentArticleIndex < articles.length - 1) {
+      setCurrentArticleIndex(currentArticleIndex + 1);
+    } else {
+      setCurrentArticleIndex(0);
+    }
+  };
+
+  // Previous article
+  const previousArticle = () => {
+    if (currentArticleIndex > 0) {
+      setCurrentArticleIndex(currentArticleIndex - 1);
+    } else {
+      setCurrentArticleIndex(articles.length - 1);
+    }
+  };
+
+  // Reset audio and load new article
   useEffect(() => {
-    return () => {
+    if (multi && !isMount) {
       if (audioRef.current) {
         audioRef.current.pause();
+        audioRef.current = null;
       }
-    };
-  }, []);
-
-  if (loading) {
-    return (
-      <ClipLoader
-        color={"rgb(5 122 85)"}
-        loading={true}
-        size={40}
-      />
-    );
-  }
+      getAudio();
+    }
+  }, [currentArticleIndex]);
 
   return (
     <div>
-      {!isPlaying ? (
-        <TextToSpeechButton onClick={handleClickPlay}>
-          <IoPlay />
-        </TextToSpeechButton>
-      ) : (
-        <TextToSpeechButton onClick={handleClickPause}>
-          <IoPause />
-        </TextToSpeechButton>
-      )}
+      {/* Title */}
+      {multi && <h2 className="leading-6 font-medium text-slate-900 text-center mb-3">{articles[currentArticleIndex].title}</h2>}
+
+      <div className="flex items-center justify-center space-x-5">
+        {/* Previous button */}
+        {multi && (
+          <button className="text-xl text-slate-600 h-10 w-10 flex justify-center items-center">
+            <IoPlayBack onClick={previousArticle} />
+          </button>
+        )}
+
+        {/* Play / pause button */}
+        {loading ? (
+          <ClipLoader
+            color={"rgb(5 122 85)"}
+            loading={true}
+            size={40}
+          />
+        ) : !isPlaying ? (
+          <TextToSpeechButton onClick={handleClickPlay}>
+            <IoPlay />
+          </TextToSpeechButton>
+        ) : (
+          <TextToSpeechButton onClick={handleClickPause}>
+            <IoPause />
+          </TextToSpeechButton>
+        )}
+
+        {/* Next button */}
+        {multi && (
+          <button className="text-xl text-slate-600 h-10 w-10 flex justify-center items-center">
+            <IoPlayForward onClick={nextArticle} />
+          </button>
+        )}
+      </div>
     </div>
   );
 }

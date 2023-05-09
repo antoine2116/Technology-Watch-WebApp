@@ -50,7 +50,7 @@ function ArticleItem({ article }: ArticleItemProps) {
           >
             Read more
           </Link>
-          <TextToSpeechPlayer text={article.summary} />
+          <TextToSpeechPlayer articles={[article]} />
         </div>
       </div>
     </div>

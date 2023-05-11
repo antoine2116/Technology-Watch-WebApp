@@ -57,8 +57,13 @@ function TextToSpeechPlayer({ articles, multi = false }: TextToSpeechPlayerProps
     if (audioRef.current) {
       audioRef.current.addEventListener("ended", () => {
         setIsPlaying(false);
+
+        if (multi) {
+          nextArticle();
+        }
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioRef.current]);
 
   // Next article

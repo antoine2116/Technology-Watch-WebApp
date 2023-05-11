@@ -39,31 +39,23 @@ const GET = async (req: NextApiRequest, res: NextApiResponse) => {
   if (fromDate) {
     let m = moment(fromDate.toString(), "DDMMYYYY");
     let date = m.toDate();
-
-    console.log("Date", date, fromDate.toString(), date.getTime());
     filters.push(`date >= ${date.getTime()}`);
   }
   if (toDate) {
     let m = moment(toDate.toString(), "DDMMYYYY");
     let date = m.toDate();
-
-    console.log("Date", date, toDate.toString(), date.getTime());
     filters.push(`date <= ${date.getTime()}`);
   }
   if (authors) {
     let authorsArray = authors.toString().split(",");
     let str = `author:\"${authorsArray.join('" OR author:"')}\"`;
-    console.log("Authors Filter", str);
     filters.push(str);
   }
   if (sources) {
     let sourceArray = sources.toString().split(",");
     let str2 = `source:\"${sourceArray.join('" OR source:"')}\"`;
-    console.log("Sources Filter", str2);
     filters.push(str2);
   }
-
-  console.log("Filters", filters);
 
   let results: Article[] = [];
   try {

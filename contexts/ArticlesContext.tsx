@@ -23,8 +23,6 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
   const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log("Fetching after change");
-
     if (activeFromDate != null || activeToDate != null || (activeAuthors != null && activeAuthors.length > 0) || (activeSources != null && activeSources.length > 0)) {
       setAreFiltersApplied(true);
     } else {
@@ -36,7 +34,6 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
 
   const formatDates = (date: Date) => {
     let str = date.toLocaleDateString("fr-fr", { year: "numeric", month: "numeric", day: "numeric" }).replaceAll("/", "");
-    console.log("formatDates", str);
     return str;
   };
 
@@ -59,8 +56,6 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
     if (query.length > 0) {
       url.searchParams.append("q", query);
     }
-
-    console.log("url", url.toString());
 
     let res = await fetch(url);
     if (!res.ok) {

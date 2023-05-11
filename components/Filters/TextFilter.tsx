@@ -1,61 +1,50 @@
-import {Simulate} from "react-dom/test-utils";
+import { Simulate } from "react-dom/test-utils";
 import select = Simulate.select;
-import {MouseEventHandler, useEffect, useReducer, useState} from "react";
+import { MouseEventHandler, useEffect, useReducer, useState } from "react";
 
 interface FilterProps {
     name: string,
     options: string[],
-    selectHandler : (...args:any) => void
+    selectHandler: (...args: any) => void
 }
 
 interface SelectedOption {
     name: string,
     index: number
 }
-export const TextFilter = ({name, options, selectHandler} : FilterProps) => {
+export const TextFilter = ({ name, options, selectHandler }: FilterProps) => {
 
     const [selected, setSelected] = useState<Set<SelectedOption>>(new Set())
     const [initialOptions, setInitialOptions] = useState<string[]>(options)
 
     useEffect(() => {
-        console.log("options", options)
         setInitialOptions(options)
     }, [options]);
 
 
 
-    const selectOption = (e:any) => {
-        console.log(e)
+    const selectOption = (e: any) => {
         const option = e.target.dataset.option
         let values = Array.from(selected.values())
         let opt = values.find((v) => {
-            console.log("V", v, option)
 
-            if(v.name == option){
+            if (v.name == option) {
                 return v
             }
         })
         //e.target.classList.toggle("bg-lime-500")
 
-        console.log("OPT", opt)
-
-        if(opt != undefined){
+        if (opt != undefined) {
             removeFromSelection(option)
         } else {
             addToSelection(option)
         }
-
-        console.log("Selected", selected)
-        console.log("Initial", initialOptions)
-
-
-
     }
 
     const addToSelection = (option: string) => {
 
         let index = initialOptions.indexOf(option)
-        if(index == -1){
+        if (index == -1) {
             return
         }
         initialOptions[index] = null
@@ -78,8 +67,7 @@ export const TextFilter = ({name, options, selectHandler} : FilterProps) => {
         let values = Array.from(selected.values())
         let opt = values.find((v) => v.name == option)
 
-        console.log("opt", opt)
-        if(opt == undefined){
+        if (opt == undefined) {
             return
         }
 
@@ -101,9 +89,9 @@ export const TextFilter = ({name, options, selectHandler} : FilterProps) => {
 
                     option != undefined && (
                         <div className={'p-1 w-fit'} key={index}>
-                            <button  onClick={selectOption}
-                                     data-option={option}
-                                     className={"p-2 text-xs whitespace-nowrap rounded-md border-lime-500 border-2  ring-0 flex text-wrap w-25"}>
+                            <button onClick={selectOption}
+                                data-option={option}
+                                className={"p-2 text-xs whitespace-nowrap rounded-md border-lime-500 border-2  ring-0 flex text-wrap w-25"}>
                                 {option}
                             </button>
                         </div>

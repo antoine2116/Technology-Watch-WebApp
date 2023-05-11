@@ -16,9 +16,9 @@ function ArticleItem({ article }: ArticleItemProps) {
     <div className="max-w-sm bg-white border border-gray-200 rounded shadow">
       <div className="p-4">
         <div className="flex justify-end">
-          {article.imageUrl && (
+          {article.url && (
             <Image
-              src={getFaviconFromUrl(article.imageUrl)}
+              src={getFaviconFromUrl(article.url)}
               height={24}
               width={24}
               alt={article.title}

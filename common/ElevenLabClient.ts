@@ -1,12 +1,5 @@
-import queryString from "query-string";
-
 const API_KEY = process.env.NEXT_PUBLIC_ELEVEN_LABS_API_KEY;
 const API_URL = "https://api.elevenlabs.io/v1/";
-
-export interface InputError {
-  field: string;
-  error: string;
-}
 
 export class ElevenLabError {
   statusCode: number;

@@ -47,7 +47,7 @@ export const TextFilter = ({ name, options, selectHandler }: FilterProps) => {
         if (index == -1) {
             return
         }
-        initialOptions[index] = null
+        initialOptions[index] = ""
 
         let opt = {
             name: option,

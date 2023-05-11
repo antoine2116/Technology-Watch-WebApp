@@ -1,18 +1,18 @@
-import {useEffect, useState} from "react";
-import {useArticles} from "@/contexts/ArticlesContext";
+import { useEffect, useState } from "react";
+import { useArticles } from "@/contexts/ArticlesContext";
 import Datepicker from "react-tailwindcss-datepicker";
-import {DateValueType} from "react-tailwindcss-datepicker/dist/types";
+import { DateValueType, PopoverDirectionType } from "react-tailwindcss-datepicker/dist/types";
 
 
 interface DateFilterProps {
     name: string,
-    selectHandler : (...args:any) => void
+    selectHandler: (...args: any) => void
 }
 
 
 export const DateFilter = ({ name, selectHandler }: DateFilterProps) => {
 
-    const {activeFromDate, activeToDate, setActiveFromDate, setActiveToDate} = useArticles()
+    const { activeFromDate, activeToDate, setActiveFromDate, setActiveToDate } = useArticles()
 
 
     const [startDate, setStartDate] = useState<DateValueType>(activeFromDate);
@@ -21,12 +21,12 @@ export const DateFilter = ({ name, selectHandler }: DateFilterProps) => {
     useEffect(() => {
 
         let end = null;
-        if(endDate?.startDate != null){
+        if (endDate?.startDate != null) {
             end = new Date(endDate.startDate)
         }
 
         let start = null;
-        if(startDate?.startDate != null){
+        if (startDate?.startDate != null) {
             start = new Date(startDate.startDate)
         }
 
@@ -37,14 +37,14 @@ export const DateFilter = ({ name, selectHandler }: DateFilterProps) => {
 
 
     const handleFromDateChange = (date: DateValueType) => {
-        if(date == null || date?.startDate == null){
+        if (date == null || date?.startDate == null) {
             setStartDate(null)
         }
         setStartDate(date)
     }
 
     const handleToDateChange = (date: DateValueType) => {
-        if(date == null || date?.startDate == null){
+        if (date == null || date?.startDate == null) {
             setEndDate(null)
         }
         setEndDate(date)
@@ -63,7 +63,7 @@ export const DateFilter = ({ name, selectHandler }: DateFilterProps) => {
                     onChange={handleFromDateChange}
                     asSingle={true}
                     useRange={false}
-                    popoverDirection="up"
+                    popoverDirection={PopoverDirectionType.up}
                     displayFormat={"DD/MM/YYYY"}
                     startWeekOn={'mon'}
 
@@ -79,7 +79,7 @@ export const DateFilter = ({ name, selectHandler }: DateFilterProps) => {
                     onChange={handleToDateChange}
                     asSingle={true}
                     useRange={false}
-                    popoverDirection="up"
+                    popoverDirection={PopoverDirectionType.up}
                     displayFormat={"DD/MM/YYYY"}
                     startWeekOn={'mon'}
 

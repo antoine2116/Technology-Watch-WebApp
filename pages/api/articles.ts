@@ -1,10 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import algoliasearch from "algoliasearch/lite";
+import algoliasearch, { SearchClient } from "algoliasearch/lite";
 import { Article } from "@/models/Article";
 import moment from "moment";
 
 const API_KEY = process.env.ALGOLIA_API_KEY;
 const APP_ID = process.env.ALGOLIA_APP_ID;
+let searchClient: SearchClient;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (!API_KEY || !APP_ID) {
@@ -14,6 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method === "GET") {
+    searchClient = algoliasearch(APP_ID, API_KEY);
     await GET(req, res);
   }
 
@@ -31,8 +33,6 @@ const GET = async (req: NextApiRequest, res: NextApiResponse) => {
   if (q) {
     query = q.toString();
   }
-
-  const searchClient = algoliasearch(APP_ID, API_KEY);
 
   let filters = [];
 

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useArticles } from "@/contexts/ArticlesContext";
 import Datepicker from "react-tailwindcss-datepicker";
-import { DateValueType, PopoverDirectionType } from "react-tailwindcss-datepicker/dist/types";
 
 
 interface DateFilterProps {
@@ -15,8 +14,8 @@ export const DateFilter = ({ name, selectHandler }: DateFilterProps) => {
     const { activeFromDate, activeToDate, setActiveFromDate, setActiveToDate } = useArticles()
 
 
-    const [startDate, setStartDate] = useState<DateValueType>(activeFromDate);
-    const [endDate, setEndDate] = useState<DateValueType>(activeToDate);
+    const [startDate, setStartDate] = useState<any>(activeFromDate);
+    const [endDate, setEndDate] = useState<any>(activeToDate);
 
     useEffect(() => {
 
@@ -36,14 +35,14 @@ export const DateFilter = ({ name, selectHandler }: DateFilterProps) => {
     }, [startDate, endDate]);
 
 
-    const handleFromDateChange = (date: DateValueType) => {
+    const handleFromDateChange = (date: any) => {
         if (date == null || date?.startDate == null) {
             setStartDate(null)
         }
         setStartDate(date)
     }
 
-    const handleToDateChange = (date: DateValueType) => {
+    const handleToDateChange = (date: any) => {
         if (date == null || date?.startDate == null) {
             setEndDate(null)
         }
@@ -63,7 +62,7 @@ export const DateFilter = ({ name, selectHandler }: DateFilterProps) => {
                     onChange={handleFromDateChange}
                     asSingle={true}
                     useRange={false}
-                    popoverDirection={PopoverDirectionType.up}
+                    popoverDirection={"up"}
                     displayFormat={"DD/MM/YYYY"}
                     startWeekOn={'mon'}
 
@@ -79,7 +78,7 @@ export const DateFilter = ({ name, selectHandler }: DateFilterProps) => {
                     onChange={handleToDateChange}
                     asSingle={true}
                     useRange={false}
-                    popoverDirection={PopoverDirectionType.up}
+                    popoverDirection={"up"}
                     displayFormat={"DD/MM/YYYY"}
                     startWeekOn={'mon'}
 

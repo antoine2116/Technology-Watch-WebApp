@@ -5,6 +5,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import TextToSpeechButton from "./TextToSpeechButton";
 import { Article } from "@/models/Article";
 import { useIsMount } from "@/hooks/UseIsMount";
+import { generateTextToSpeechText } from "@/helpers/ArticleHelper";
 
 interface TextToSpeechPlayerProps {
   articles: Article[];
@@ -15,7 +16,7 @@ function TextToSpeechPlayer({ articles, multi = false }: TextToSpeechPlayerProps
   const isMount = useIsMount();
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
-  const { audioURL, loading, getAudio } = useSpeech(articles[currentArticleIndex].summary);
+  const { audioURL, loading, getAudio } = useSpeech(generateTextToSpeechText(articles[currentArticleIndex]));
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Play

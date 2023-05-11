@@ -1,6 +1,5 @@
 import { ElevenLabClient } from "@/common/ElevenLabClient";
-import { log } from "console";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const voiceId = "ErXwobaYiN019PkySvjV";
 

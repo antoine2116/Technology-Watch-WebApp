@@ -22,15 +22,35 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
 
+  const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(0);
+
+  const nextPage = () => {
+    if(isLoading) return;
+    if(page + 1 > totalPages) return;
+
+    setPage(page + 1);
+  }
+
+
+  useEffect(() => {
+      fetchFilters();
+  }, []);
+
+
   useEffect(() => {
     if (activeFromDate != null || activeToDate != null || (activeAuthors != null && activeAuthors.length > 0) || (activeSources != null && activeSources.length > 0)) {
       setAreFiltersApplied(true);
     } else {
       setAreFiltersApplied(false);
     }
-
+    setPage(1);
     fetchArticles();
   }, [activeAuthors, activeSources, activeFromDate, activeToDate, query]);
+
+  useEffect(() => {
+    fetchArticles();
+  }, [page]);
 
   const formatDates = (date: Date) => {
     let str = date.toLocaleDateString("fr-fr", { year: "numeric", month: "numeric", day: "numeric" }).replaceAll("/", "");
@@ -57,25 +77,61 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
       url.searchParams.append("q", query);
     }
 
+    url.searchParams.append("page", page.toString());
+
     let res = await fetch(url);
+
+
     if (!res.ok) {
       setIsError(true);
       setIsLoading(false);
       setArticles([]);
+
       return;
     }
+    const json = await res.json();
+    const articleList = (json.articles as Article[]).filter((a) => a.url);
+    const totalPages = json.nbPages as number;
 
-    const articles = ((await res.json()).articles as Article[]).filter((a) => a.url);
+    setTotalPages(totalPages);
 
-    setArticles([...articles]);
-
-    if (authors.length == 0 || sources.length == 0) {
-      setFilters(articles);
+    if (page > 1) {
+      //Add articles to the list
+        setArticles([...articles, ...articleList]);
+    } else {
+        setArticles([...articleList]);
     }
+
+
 
     setIsLoading(false);
     setIsError(false);
   };
+
+
+  const fetchFilters = async () => {
+    let res = await fetch("/api/filters");
+
+    if (!res.ok) {
+      setIsError(true);
+      setIsLoading(false);
+      setArticles([]);
+
+      return;
+    }
+
+    const json = await res.json();
+
+    const sources = json.filters.sources as string[];
+    const authors = json.filters.authors as string[];
+
+
+    setSources(sources);
+    setAuthors(authors);
+
+
+
+  }
 
   const setFilters = (articles: Article[]) => {
     const authors = new Set<string>();
@@ -113,6 +169,7 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
         areFiltersApplied,
         isLoading,
         isError,
+        nextPage
       }}
     >
       {children}

@@ -27,11 +27,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 // @ts-ignore
 // @ts-ignore
 const GET = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { q, fromDate, toDate, authors, sources } = req.query;
+  const { q, fromDate, toDate, authors, sources, page } = req.query;
 
   let query: string = "";
   if (q) {
     query = q.toString();
+  }
+
+
+  let p = 0
+  if(!page){
+    p = 1
+  }else{
+    p = parseInt(page.toString())
   }
 
   let filters = [];
@@ -62,7 +70,9 @@ const GET = async (req: NextApiRequest, res: NextApiResponse) => {
     const indexArticles = searchClient.initIndex("Articles");
     const resultArticles = await indexArticles.search(query, {
       filters: `${filters.join(" AND ")}`.trim(),
+      page: p -1
     });
+
 
     const hits = resultArticles.hits;
 
@@ -71,7 +81,7 @@ const GET = async (req: NextApiRequest, res: NextApiResponse) => {
       results.push(castToArticle(article));
     });
 
-    res.status(200).json({ articles: results });
+    res.status(200).json({ articles: results, page: resultArticles.page, nbPages: resultArticles.nbPages});
   } catch (e) {
     console.log(e);
     res.status(500).json({ error: "Internal Server Error" });

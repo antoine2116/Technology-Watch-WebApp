@@ -4,7 +4,7 @@ import Image from "next/image"
 function Navbar() {
   return (
     <>
-      <nav className="bg-white border-b border-accent-2 sticky top-0 z-10 flex-none w-full">
+      <nav className="bg-white border-b border-accent-2  flex-none w-full">
         <div className="py-3">
           <div className="mx-auto">
             <div className="flex flex-wrap items-center">
@@ -27,6 +27,7 @@ function Navbar() {
           </div>
         </div>
       </nav>
+
     </>
   )
 }

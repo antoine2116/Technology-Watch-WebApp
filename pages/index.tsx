@@ -1,8 +1,6 @@
 import { useArticles } from "@/contexts/ArticlesContext";
 
 import ArticleList from "@/components/Articles/ArticlesList";
-import { Article } from "@/models/Article";
-import { useEffect, useState } from "react";
 
 export default function Home() {
   const { areFiltersApplied, articles, isLoading, isError, fetchArticles } = useArticles();

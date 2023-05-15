@@ -7,7 +7,7 @@ import {useArticles} from "@/contexts/ArticlesContext";
 
 function Layout({ children }: { children: React.ReactNode }) {
 
-  const {areFiltersApplied} = useArticles()
+  const {areFiltersApplied, nextPage, isLoading} = useArticles()
 
   const [showFilters, setShowFilters] = useState<boolean>(false);
 
@@ -15,6 +15,11 @@ function Layout({ children }: { children: React.ReactNode }) {
 
   const filterButtonHandler = () => {
     setShowFilters(!showFilters)
+  }
+
+  const handleScroll = (e: any) => {
+    const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    if (bottom && !isLoading) { nextPage() }
   }
 
 
@@ -32,9 +37,19 @@ function Layout({ children }: { children: React.ReactNode }) {
         />
       </Head>
 
-      <div className={`antialiased bg-white text-slate-900 ${showFilters ? 'overflow-hidden max-h-screen' : ''}`}>
-        <Navbar />
-          <div className={'flex w-full p-2 justify-between h-14'}>
+      <div className={`relative antialiased bg-white text-slate-900 max-h-screen overflow-auto py-4`} onScroll={handleScroll}>
+        <div className={'fixed top-0 z-10 w-full'}>
+          <Navbar />
+
+        </div>
+
+
+
+
+        <Filters showFilters={showFilters} setShowFilters={setShowFilters}/>
+
+        <div className={`flex w-full flex-wrap overflow-hidden flex-grow max-h-min pt-12`} >
+          <div className={'flex w-full p-2 justify-between h-14 bg-white'} id={"search-nav"}>
             <div className={'pr-2 flex-grow'}>
               <Search/>
             </div>
@@ -45,18 +60,11 @@ function Layout({ children }: { children: React.ReactNode }) {
                 </svg>
               </button>
             </div>
-
           </div>
-          <Filters showFilters={showFilters} setShowFilters={setShowFilters}/>
-          <div className={`flex w-full `}>
-            <div className="flex-auto py-4 px-6">
-              <div className={`container mx-auto `}>
-                <main>{children}</main>
-              </div>
-            </div>
+          <div className="px-6">
+              <main>{children}</main>
           </div>
-
-
+        </div>
       </div>
     </>
   );

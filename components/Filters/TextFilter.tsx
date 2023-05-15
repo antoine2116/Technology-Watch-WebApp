@@ -34,7 +34,9 @@ export const TextFilter = ({ name, options, selectHandler }: FilterProps) => {
         })
         //e.target.classList.toggle("bg-lime-500")
 
-        if (opt != undefined) {
+
+
+        if (opt != null) {
             removeFromSelection(option)
         } else {
             addToSelection(option)
@@ -67,7 +69,7 @@ export const TextFilter = ({ name, options, selectHandler }: FilterProps) => {
         let values = Array.from(selected.values())
         let opt = values.find((v) => v.name == option)
 
-        if (opt == undefined) {
+        if (opt == null) {
             return
         }
 
@@ -85,9 +87,10 @@ export const TextFilter = ({ name, options, selectHandler }: FilterProps) => {
             <label htmlFor={name} className={"font-bold"}>{name}</label>
 
             <div className="flex overflow-y-auto py-2">
+
                 {initialOptions.map((option, index) =>
 
-                    option != undefined && (
+                    option != null && option != "" && (
                         <div className={'p-1 w-fit'} key={index}>
                             <button onClick={selectOption}
                                 data-option={option}

@@ -65,6 +65,7 @@ export const DateFilter = ({ name, selectHandler }: DateFilterProps) => {
                     popoverDirection={"up"}
                     displayFormat={"DD/MM/YYYY"}
                     startWeekOn={'mon'}
+                    showFooter={true}
 
 
                 />
@@ -81,6 +82,7 @@ export const DateFilter = ({ name, selectHandler }: DateFilterProps) => {
                     popoverDirection={"up"}
                     displayFormat={"DD/MM/YYYY"}
                     startWeekOn={'mon'}
+                    showFooter={true}
 
                 />
             </div>

@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState, FC, useEffect } from "react";
+import { createContext, ReactNode, useContext, useState, useEffect } from "react";
 import { Article } from "@/models/Article";
 
 export const ArticlesContext = createContext<any>({});

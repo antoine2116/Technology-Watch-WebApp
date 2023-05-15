@@ -59,28 +59,30 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchArticles = async () => {
     setIsLoading(true);
-    let url = new URL("http://localhost:3000/api/articles");
+
+    const url = "/api/articles";
+    let params = new URLSearchParams();
+
     if (activeAuthors.length > 0) {
-      url.searchParams.append("authors", activeAuthors.join(","));
+      params.append("authors", activeAuthors.join(","));
     }
     if (activeSources.length > 0) {
-      url.searchParams.append("sources", activeSources.join(","));
+      params.append("sources", activeSources.join(","));
     }
     if (activeFromDate != null) {
-      url.searchParams.append("fromDate", formatDates(activeFromDate));
+      params.append("fromDate", formatDates(activeFromDate));
     }
     if (activeToDate != null) {
-      url.searchParams.append("toDate", formatDates(activeToDate));
+      params.append("toDate", formatDates(activeToDate));
     }
 
     if (query.length > 0) {
-      url.searchParams.append("q", query);
+      params.append("q", query);
     }
 
-    url.searchParams.append("page", page.toString());
+    params.append("page", page.toString())
 
-    let res = await fetch(url);
-
+    let res = await fetch(`${url}?${params.toString()}`);
 
     if (!res.ok) {
       setIsError(true);
@@ -133,23 +135,6 @@ export const ArticlesProvider = ({ children }: { children: ReactNode }) => {
 
   }
 
-  const setFilters = (articles: Article[]) => {
-    const authors = new Set<string>();
-    const sources = new Set<string>();
-
-    for (const article of articles) {
-      if (article.author != null && !authors.has(article.author)) {
-        authors.add(article.author);
-      }
-
-      if (article.source != null && !sources.has(article.source)) {
-        sources.add(article.source);
-      }
-    }
-
-    setAuthors([...Array.from(authors.values())]);
-    setSources([...Array.from(sources.values())]);
-  };
 
   return (
     <ArticlesContext.Provider

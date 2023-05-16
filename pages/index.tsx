@@ -1,12 +1,18 @@
 import { useArticles } from "@/contexts/ArticlesContext";
 
 import ArticleList from "@/components/Articles/ArticlesList";
+import Head from "next/head";
 
 export default function Home() {
   const { areFiltersApplied, articles, isLoading, isError, fetchArticles } = useArticles();
 
   return (
     <>
+        {/*PWA Manifest*/}
+        <Head>
+            <link rel="manifest" href="/manifest.json" />
+        </Head>
+
       <div className="mb-4 text-center">
         <h1 className="font-extrabold text-3xl tracking-tight ">HMI Technology Watch</h1>
       </div>

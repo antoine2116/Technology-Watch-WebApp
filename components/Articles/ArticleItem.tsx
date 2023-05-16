@@ -45,7 +45,7 @@ function ArticleItem({ article }: ArticleItemProps) {
           <div className="inline-flex items-center text-xs">
             <IoCalendar className="mr-2 text-slate-600" />
             <span className="text-sm">{new Date(article.date).toLocaleDateString("fr-fr", { year: "numeric", month: "numeric", day: "numeric" })}</span>
-          </div>'
+          </div>
           <div className={'gap-2 flex'}>
             <Link
                 target={"_blank"}

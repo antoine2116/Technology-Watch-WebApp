@@ -49,7 +49,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         <Filters showFilters={showFilters} setShowFilters={setShowFilters}/>
 
         <div className={`flex w-full flex-wrap overflow-hidden flex-grow max-h-min pt-12`} >
-          <div className={'flex w-full p-2 justify-between h-14 bg-white'} id={"search-nav"}>
+          <div className={'flex w-full py-2 px-2 sm:px-6 justify-between h-14 bg-white'} id={"search-nav"}>
             <div className={'pr-2 flex-grow'}>
               <Search/>
             </div>
@@ -61,7 +61,7 @@ function Layout({ children }: { children: React.ReactNode }) {
               </button>
             </div>
           </div>
-          <div className="px-2 w-full mt-6">
+          <div className="px-2 sm:px-6 w-full mt-6">
               <main>{children}</main>
           </div>
         </div>

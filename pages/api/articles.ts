@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import algoliasearch, { SearchClient } from "algoliasearch/lite";
+import algoliasearch, { SearchClient } from "algoliasearch";
 import { Article } from "@/models/Article";
 import moment from "moment";
 
@@ -67,10 +67,15 @@ const GET = async (req: NextApiRequest, res: NextApiResponse) => {
 
   let results: Article[] = [];
   try {
+
+
     const indexArticles = searchClient.initIndex("Articles");
+    indexArticles.setSettings({
+      ranking: ["desc(date)"],
+    })
     const resultArticles = await indexArticles.search(query, {
       filters: `${filters.join(" AND ")}`.trim(),
-      page: p -1
+      page: p -1,
     });
 
 

@@ -61,7 +61,7 @@ function Layout({ children }: { children: React.ReactNode }) {
               </button>
             </div>
           </div>
-          <div className="px-6">
+          <div className="px-2 w-full mt-6">
               <main>{children}</main>
           </div>
         </div>

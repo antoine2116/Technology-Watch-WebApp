@@ -15,6 +15,7 @@ export const useSpeech = (text: string) => {
     try {
       const response = await ElevenLabClient.postBlob(`text-to-speech/${voiceId}`, {
         text: text,
+        model_id: 'eleven_multilingual_v1',
         voice_settings: {
           stability: 1,
           similarity_boost: 1,
